@@ -199,7 +199,7 @@ STR
 
     model = Ebooks::Model.load(model_path)
     if input && !input.empty?
-      puts "@cmd " + model.make_response(input, 135)
+      puts model.make_response input
     else
       puts model.make_statement
     end

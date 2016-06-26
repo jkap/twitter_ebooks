@@ -122,7 +122,7 @@ module Ebooks
     # @param text [String]
     # @return [Array<Array<Integer>>]
     def mass_tikify(text)
-      sentences = NLP.sentences(text)
+      sentences = NLP.paragraphs(text)
 
       sentences.map do |s|
         tokens = NLP.tokenize(s).reject do |t|
@@ -246,7 +246,7 @@ module Ebooks
     # @param generator [SuffixGenerator, nil]
     # @param retry_limit [Integer] how many times to retry on invalid tweet
     # @return [String]
-    def make_statement(limit=140, generator=nil, retry_limit=10)
+    def make_statement(limit=50000, generator=nil, retry_limit=10)
       responding = !generator.nil?
       generator ||= SuffixGenerator.build(@sentences)
 
@@ -316,7 +316,7 @@ module Ebooks
     # @param limit [Integer] characters available for response
     # @param sentences [Array<Array<Integer>>]
     # @return [String]
-    def make_response(input, limit=140, sentences=@mentions)
+    def make_response(input, limit=50000, sentences=@sentences)
       # Prefer mentions
       relevant, slightly_relevant = find_relevant(sentences, input)
 
@@ -326,8 +326,6 @@ module Ebooks
       elsif slightly_relevant.length >= 5
         generator = SuffixGenerator.build(slightly_relevant)
         make_statement(limit, generator)
-      elsif sentences.equal?(@mentions)
-        make_response(input, limit, @sentences)
       else
         make_statement(limit)
       end

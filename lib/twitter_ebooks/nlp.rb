@@ -65,6 +65,13 @@ module Ebooks
       text.split(/\n+|(?<=[.?!])\s+/)
     end
 
+    # Split text into paragraphs.
+    # @param text [String]
+    # @return [Array<String>]
+    def self.paragraphs(text)
+      text.split(/\n+/)
+    end
+
     # Split a sentence into word-level tokens
     # As above, this is ad hoc because tokenization libraries
     # do not behave well wrt. things like emoticons and timestamps
